@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+        docker{
+            image "pgupta584/pythonapitesting:html"
+            label 'master'
+            args '-v /var/run/docker.sock:/var/run/docker.sock' // Necessary if you want Docker commands to run inside the container
+        }
+    }
+    stages {
+        stage('Checkout code from GIT') {
+            steps {
+                git branch:'main', url:"https://github.com/pgupta584/python-pytest-request.git"
+            }
+        }
+        stage('Run The Tests') {
+            steps {
+                script{
+                    sh 'pytest -s --host=prod --disable-pytest-warnings --html=report.html'
+                }
+            }
+        }
+        // stage('Publish HTML Reports') {
+        //     steps {
+        //         script{
+        //             archiveArtifacts artifacts: 'target/surefire-reports/emailable-report.html', followSymlinks: false
+        //         }
+        //     }
+        // }
+    }
+    post {
+        always {
+            script {
+                try {
+                    echo "Attempting to stop and remove any additional test containers..."
+
+                    // Run a clean-up command to remove unused containers, images, and networks
+                    sh 'docker system prune -af'  // '-f' flag to force prune without a prompt
+                    echo "Docker system prune completed successfully."
+
+                } catch (Exception e) {
+                    // Handle any exceptions that occur during the container stop/remove process
+                    echo "Error in stopping/removing Docker containers: ${e.message}"
+                }
+            }
+        }
+    }
+}

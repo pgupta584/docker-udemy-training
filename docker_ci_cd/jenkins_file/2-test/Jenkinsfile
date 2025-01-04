@@ -1,0 +1,15 @@
+pipeline {
+    agent {
+        docker{
+            image "alpine"
+        }
+    }
+
+    stages {
+        stage('Get Google Page') {
+            steps {
+                sh "wget www.google.com"
+            }
+        }
+    }
+}

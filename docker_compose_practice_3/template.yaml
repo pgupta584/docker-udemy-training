@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html  # Mount local 'html' folder to container
+    networks:
+      - my-network
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - mysql_data:/var/lib/mysql  # Store data on the host machine
+    networks:
+      - my-network
+networks:
+  my-network:
+    driver: bridge
+volumes:
+  mysql_data:

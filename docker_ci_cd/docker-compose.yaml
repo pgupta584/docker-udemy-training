@@ -1,0 +1,12 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    user: root
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+          - ./volumes/master:/var/jenkins_home
+
+
+#  6487c31803d9431798208d8dc4ef6e0f

@@ -1,0 +1,4 @@
+out/
+.idea/
+docker_ci_cd/volumes/master/
+docker_ci_cd/volumes/node/

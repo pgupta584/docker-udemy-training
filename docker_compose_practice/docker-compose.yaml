@@ -1,0 +1,6 @@
+version: "3"
+services:
+  cubefinder:
+    image: pgupta584/cubefinder:v1
+    environment:
+      - Number=3
